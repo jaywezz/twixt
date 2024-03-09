@@ -33,7 +33,7 @@ class _RetailProspectsScreenState extends ConsumerState<RetailProspectsScreen> {
         children: [
           ref.watch(wonCustomerProvider).when(
               data: (data){
-                data = data.where((element) => element.customerGroupId != 3).toList();
+                // data = data.where((element) => element.customerGroupId != 3).toList();
                 if(ref.watch(searchController).text != ""){
                   data = data.where((element) => element.customerName!.toLowerCase().contains(ref.watch(searchController).text.toLowerCase())).toList();
                 }
@@ -53,6 +53,7 @@ class _RetailProspectsScreenState extends ConsumerState<RetailProspectsScreen> {
                                 print("refreshing: ");
                                 ref.read(isRefreshProvider.state).state = true;
                                 await ref.watch(prospectsRepositoryProvider).getWon(true);
+                                ref.refresh(wonCustomerProvider);
                               }),
                         )
                       ],
@@ -68,10 +69,10 @@ class _RetailProspectsScreenState extends ConsumerState<RetailProspectsScreen> {
                 return SizedBox(
                     height: MediaQuery.of(context).size.height - 250.sp,
                     child: RefreshIndicator(
-                      onRefresh: (){
-                        print("refreshing: ");
+                      onRefresh: ()async{
                         ref.read(isRefreshProvider.state).state = true;
-                        return ref.watch(prospectsRepositoryProvider).getWon(true);
+                        await ref.watch(prospectsRepositoryProvider).getWon(true);
+                        return ref.refresh(wonCustomerProvider);
                       },
                       child: ListView.builder(
                           padding: EdgeInsets.zero,

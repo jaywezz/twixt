@@ -258,10 +258,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               left: 10.0.sp, top: 10.sp, right: 10.sp),
                           child: Row(
                             children: [
-                              Text(
-                                prospectsAchieved,
-                                style: Styles.heading2(context).copyWith(),
-                              ),
+                              ref.watch(wonCustomerProvider)
+                                  .when(data: (data){
+                                    return  Text(
+                                      data.length.toString(),
+                                      style: Styles.heading2(context).copyWith(),
+                                    );
+                              },
+                                  error: (e,s){
+                                    return Text("0");
+                                  }, loading: (){
+                                    return Text("..");
+                                  })
+
                             ],
                           ),
                         ),

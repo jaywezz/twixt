@@ -5,6 +5,9 @@ import 'package:go_router/go_router.dart';
 import 'package:isar/isar.dart';
 import 'package:nested_navigation_gorouter_example/features/authentication/models/user_model.dart';
 import 'package:nested_navigation_gorouter_example/features/authentication/repository/auth_repo.dart';
+import 'package:nested_navigation_gorouter_example/features/authentication/screens/otp_login2.dart';
+import 'package:nested_navigation_gorouter_example/features/authentication/screens/otp_login_screen.dart';
+import 'package:nested_navigation_gorouter_example/features/authentication/screens/otp_screen.dart';
 import 'package:nested_navigation_gorouter_example/features/sales/leads/models/regions_model/region_model.dart';
 import 'package:nested_navigation_gorouter_example/features/sales/leads/provider/leads_provider.dart';
 import 'package:nested_navigation_gorouter_example/global_widgets/indicators/default_snackbar.dart';
@@ -53,33 +56,51 @@ class AuthNotifier extends StateNotifier<AsyncValue> {
       : super(const AsyncValue.data(null));
   Ref read;
 
-  Future<void> login(String phoneNumber, String password, BuildContext context) async {
+  Future<void> phonePasswordLogin(String phoneNumber, String password, BuildContext context) async {
     state = const AsyncValue.loading();
     try {
-      final responseModel = await read.read(authRepositoryProvider).login(phoneNumber, password);
-      showCustomSnackBar("Successfully logged in.", isError: false);
-      // state = AsyncValue.data(responseModel);
+      final responseModel = await read.read(authRepositoryProvider).phonePasswordLogin(phoneNumber, password);
+      showCustomSnackBar("Successfully logged in.", bgColor: Colors.green, isError: false);
       if (!mounted) return;
+      state = AsyncValue.data(responseModel);
       context.go('/dashboard');
     } catch (e, s) {
-      showCustomSnackBar(e.toString(), bgColor: Colors.blue);
+      print(s);
+      showCustomSnackBar(e.toString(), isError: true);
       state = AsyncValue.error(e.toString());
     }
   }
 
-  Future<void> sendOtp(String phoneNumber,  BuildContext context) async {
+  Future<void> otpLogin(String phoneNumber, String otp,  BuildContext context) async {
     state = const AsyncValue.loading();
     try {
-      final responseModel = await read.read(authRepositoryProvider).sendOtp(phoneNumber);
+      final responseModel = await read.read(authRepositoryProvider).otpLogin(phoneNumber, otp);
+      showCustomSnackBar("Login Successful.", bgColor: Colors.green, isError: false);
+      if (!mounted) return;
+      context.go('/dashboard');
       if(!mounted) return;
-      showCustomSnackBar("Otp sent successfully.", isError: false);
-      context.go('/login/otp-screen',  extra: phoneNumber);
       state = AsyncValue.data(responseModel);
     } catch (e, s) {
       showCustomSnackBar(e.toString(), isError: true);
       state = AsyncValue.error(e.toString());
     }
   }
+
+  Future<void> sendOtp(String phoneNumber,  BuildContext context, bool isLogin) async {
+    state = const AsyncValue.loading();
+    try {
+      final responseModel = await read.read(authRepositoryProvider).sendOtp(phoneNumber);
+      if(!mounted) return;
+      showCustomSnackBar("Otp sent successfully.", isError: false);
+      context.goNamed(OtpLogin2.routeName,  extra: {"phone":phoneNumber, "otp": responseModel.data["otp"]});
+      state = AsyncValue.data(responseModel);
+    } catch (e, s) {
+      showCustomSnackBar(e.toString(), isError: true);
+      state = AsyncValue.error(e.toString());
+    }
+  }
+
+
 
   Future<void> verifyOtp(String phoneNumber, String otp,  BuildContext context) async {
     state = const AsyncValue.loading();

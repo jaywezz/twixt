@@ -21,7 +21,7 @@ class AuthRepository extends StateNotifier {
 
   AuthRepository(this._reader) : super(0);
 
-  Future<Response> login(String phoneNumber, String password)async{
+  Future<Response> phonePasswordLogin(String phoneNumber, String password)async{
     Isar isar = await IsarService().db;
     try {
       String fcmToken = "";
@@ -34,6 +34,34 @@ class AuthRepository extends StateNotifier {
           url: "/login",
           data: { "phone_number": phoneNumber,
             "password": password, "device_token": fcmToken,});
+      await TokenStorage().storeAccessToken(res.data["access_token"]);
+      print("saving data: ${User.fromJson(res.data["user"]).name}");
+      await isar.writeTxn(() async {
+        await isar.users.put(User.fromJson(res.data["user"])); // insert & update
+      });
+      return res;
+    } on DioException catch (e, s) {
+      String message = DioExceptions.fromDioError(e).message;
+      throw message;
+    } catch (e, s) {
+      print(s);
+      throw "An unknown error occurred. Try again later";
+    }
+  }
+
+  Future<Response> otpLogin(String phoneNumber, String otp)async{
+    Isar isar = await IsarService().db;
+    try {
+      String fcmToken = "";
+      // await FirebaseMessaging.instance.getToken().then((value){
+      //   fcm_token = value!;
+      //   },
+      // );
+      final res = await ApiHandler.doPost(
+          dio:_reader.read(networkServiceProvider),
+          url: "/verify/otp/$phoneNumber/$otp",
+          data: { "phone_number": phoneNumber,
+            "otp": otp, "device_token": fcmToken,});
       await TokenStorage().storeAccessToken(res.data["access_token"]);
       print("saving data: ${User.fromJson(res.data["user"]).name}");
       await isar.writeTxn(() async {
@@ -104,12 +132,13 @@ class AuthRepository extends StateNotifier {
   Future<List<RegionModel>> getUserRegions(bool isSync)async{
     print("refreshing: $isSync");
     Isar isar = await IsarService().db;
-
+    isSync = true;
     try {
       final localRegions = await isar.regionModels.where().findAll();
       if(localRegions.isNotEmpty && isSync == false){
         return localRegions;
       }else{
+        print("getting new data");
         final res = await ApiHandler.doGet(
           dio:_reader.read(networkServiceProvider),
           url: "/regions/list",);
@@ -119,6 +148,7 @@ class AuthRepository extends StateNotifier {
           await isar.regionModels.clear();//clear db to insert new record
         });
         for(RegionModel region in regions){
+          print("adding region:${region.regionId}");
           await isar.writeTxn(() async {
             await isar.regionModels.put(region); // insert & update
           });

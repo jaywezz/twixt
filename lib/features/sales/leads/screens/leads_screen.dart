@@ -47,6 +47,7 @@ class _LeadsScreensState extends ConsumerState<LeadsScreens> {
                               text: "Refresh",
                               action: ()async{
                                 ref.watch(isRefreshProvider.state).state = true;
+                                await ref.watch(leadsRepositoryProvider).getLeads(true);
                                 ref.refresh(leadsProvider);
                               }),
                         )

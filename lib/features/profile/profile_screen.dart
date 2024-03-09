@@ -39,8 +39,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   // Salesperson? salesperson;
   @override
   Widget build(BuildContext context) {
-    return ListView(
-        physics: BouncingScrollPhysics(),
+    return user ==null? Center(child: Text("Getting User..",
+      style: Styles.heading3(context).copyWith(color: Colors.black54),)):ListView(
+        physics:const BouncingScrollPhysics(),
         shrinkWrap: true,
         children: [
           Column(
@@ -59,8 +60,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                             child: CircleAvatar(
                                 backgroundColor: Styles.appSecondaryColor,
                                 radius: 55.r,
-                                backgroundImage: NetworkImage(
-                                    "")),
+                                backgroundImage: const AssetImage(
+                                    "assets/logos/play_store_512.png")),
                             // "https://images.unsplash.com/photo-1513152697235-fe74c283646a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=948&q=80")),
                           ),
 
@@ -443,34 +444,34 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   SizedBox(
                     height: 10.h,
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0.sp),
-                    child: FullWidthButton(
-                      action: () {
-
-                      },
-                      btnheight: 50.h,
-                      color: Colors.white,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "My notifications",
-                            style: Styles.heading3(context)
-                                .copyWith(color: Styles.appPrimaryLightColor),
-                          ),
-                          SizedBox(width: 5.w,),
-                          // Badge(
-                          //     showBadge: notificationCount == 0?false:true,
-                          //     position: BadgePosition.topEnd(top: 10, end: 10),
-                          //     badgeContent: notificationCount == 0?null:Text(notificationCount.toString(), style: Styles.heading3(context).copyWith(color: Colors.white),),
-                          //     child:null
-                          //
-                          // ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: EdgeInsets.symmetric(horizontal: 20.0.sp),
+                  //   child: FullWidthButton(
+                  //     action: () {
+                  //
+                  //     },
+                  //     btnheight: 50.h,
+                  //     color: Colors.white,
+                  //     child: Row(
+                  //       mainAxisAlignment: MainAxisAlignment.center,
+                  //       children: [
+                  //         Text(
+                  //           "My notifications",
+                  //           style: Styles.heading3(context)
+                  //               .copyWith(color: Styles.appPrimaryLightColor),
+                  //         ),
+                  //         SizedBox(width: 5.w,),
+                  //         // Badge(
+                  //         //     showBadge: notificationCount == 0?false:true,
+                  //         //     position: BadgePosition.topEnd(top: 10, end: 10),
+                  //         //     badgeContent: notificationCount == 0?null:Text(notificationCount.toString(), style: Styles.heading3(context).copyWith(color: Colors.white),),
+                  //         //     child:null
+                  //         //
+                  //         // ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
                   SizedBox(
                     height: 10.h,
                   ),
@@ -496,7 +497,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       showCustomSnackBar("Successfully logged out", bgColor: Colors.green);
                     },
                     child: Text(
-                      "LogOut",
+                      "Log Out",
                       style: Styles.normalText(context)
                           .copyWith(color: Colors.white),
                     ),

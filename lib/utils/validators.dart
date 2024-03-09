@@ -18,3 +18,20 @@ String? passwordValidator(String? password) {
     return null;
   }
 }
+
+String? emailValidator(String? em) {
+
+  String p = r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+
+  RegExp regExp = RegExp(p);
+  if(em!.isEmpty){
+    return "Email required";
+  }else{
+    if(regExp.hasMatch(em)){
+      return null;
+    }else{
+      return "Invalid email address";
+    }
+  }
+
+}

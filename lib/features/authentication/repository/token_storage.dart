@@ -2,6 +2,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:isar/isar.dart';
 import 'package:nested_navigation_gorouter_example/features/authentication/models/user_model.dart';
+import 'package:nested_navigation_gorouter_example/features/authentication/screens/phone_login_screen.dart';
 import 'package:nested_navigation_gorouter_example/services/go_router_config_service.dart';
 import 'package:nested_navigation_gorouter_example/services/isar_service.dart';
 
@@ -23,14 +24,18 @@ class TokenStorage {
   }
 
   Future<bool> hasToken() async {
-    final String? accessToken = await getAccessToken();
-    return accessToken != null;
+    try{
+      final String? accessToken = await getAccessToken();
+      return accessToken != null;
+    }catch(e){
+      throw e;
+    }
   }
 
   Future<void> removeAccessToken()async {
     Isar isar = await IsarService().db;
 
-    rootNavigatorKey.currentContext!.pushReplacement('/login');
+    rootNavigatorKey.currentContext!.pushReplacementNamed(PhoneLoginScreen.routeName);
     await isar.writeTxn(() async {
       await isar.users.clear(); // insert & update
     });

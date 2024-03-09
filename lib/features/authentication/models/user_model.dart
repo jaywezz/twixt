@@ -64,7 +64,7 @@ class User {
     status: json["status"],
     fcmToken: json["fcm_token"],
     adminId: json["admin_id"],
-    routeCode: json["route_code"],
+    routeCode: json["route_code"].toString(),
     createdAt: json["created_at"] == null ? null : DateTime.parse(json["created_at"]),
     updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
     regionId: json["region_id"],

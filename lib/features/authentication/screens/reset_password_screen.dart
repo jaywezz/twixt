@@ -20,7 +20,7 @@ import 'package:nested_navigation_gorouter_example/utils/validators.dart';
 Logger _log = Logger(printer: PrettyPrinter());
 
 class ResetPasswordScreen extends ConsumerStatefulWidget {
-  static const routeName = '/sign-in';
+  static const routeName = '/reset-password';
   final String phoneNumber;
   const ResetPasswordScreen({Key? key, required this.phoneNumber}) : super(key: key);
 

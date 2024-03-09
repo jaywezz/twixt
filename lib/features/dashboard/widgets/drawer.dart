@@ -147,7 +147,10 @@ class _MainDrawerState extends ConsumerState<MainDrawer> {
                             matchTextDirection: true,
                             color: Colors.white,
                           ),
-                          text: "Home",
+                          text: "Home", onclick: () {
+                            Navigator.pop(context);
+                            context.go("/dashboard");
+                            },
                         ),
                       ),
                       user==null?SizedBox():user!.accountType == AppConstants.deliveryType?SizedBox():SizedBox(
@@ -168,6 +171,10 @@ class _MainDrawerState extends ConsumerState<MainDrawer> {
                             color: Colors.white,
                           ),
                           text: "Leads",
+                          onclick: (){
+                            context.go("/sales");
+
+                          },
                         ),
                       ),
                       SizedBox(
@@ -188,6 +195,10 @@ class _MainDrawerState extends ConsumerState<MainDrawer> {
                             color: Colors.white,
                           ),
                           text: "Schedules",
+                          onclick: (){
+                            context.go("/schedule");
+
+                          },
                         ),
                       ),
                       SizedBox(
@@ -198,8 +209,8 @@ class _MainDrawerState extends ConsumerState<MainDrawer> {
                       ),
                       GestureDetector(
                         onTap: () {
+                          Navigator.pop(context);
                           context.go('/profile');
-
                         },
                         child: DrawerItem(
                           icon: SvgPicture.asset(
@@ -208,6 +219,10 @@ class _MainDrawerState extends ConsumerState<MainDrawer> {
                             color: Colors.white,
                           ),
                           text: "View Profile",
+                          onclick: (){
+                            Navigator.pop(context);
+                            context.go('/profile');
+                          },
                         ),
                       ),
                       SizedBox(
@@ -220,12 +235,16 @@ class _MainDrawerState extends ConsumerState<MainDrawer> {
                         onTap: () {
                           context.go('/dashBoard/inventory');
                         },
-                        child: const DrawerItem(
+                        child: DrawerItem(
                           icon:Padding(
                             padding: EdgeInsets.symmetric(horizontal: 15.0),
                             child: Icon(Icons.inventory, color: Colors.white, size: 17,),
                           ),
                           text: "Inventory",
+                          onclick: (){
+                            context.go('/dashBoard/inventory');
+
+                          },
                         ),
                       ):SizedBox(),
                       SizedBox(
@@ -238,11 +257,14 @@ class _MainDrawerState extends ConsumerState<MainDrawer> {
                         onTap: () {
                           context.goNamed(ProductCatalogueScreen.route);
                         },
-                        child: const DrawerItem(
+                        child: DrawerItem(
                           icon:Padding(
                             padding: EdgeInsets.symmetric(horizontal: 15.0),
                             child: Icon(Icons.book_outlined, color: Colors.white, size: 17,),
                           ),
+                          onclick:() {
+                            context.goNamed(ProductCatalogueScreen.route);
+                          } ,
                           text: "Product Catalogue",
                         ),
                       ),
@@ -262,6 +284,9 @@ class _MainDrawerState extends ConsumerState<MainDrawer> {
                             matchTextDirection: true,
                             color: Colors.white,
                           ),
+                          onclick: () {
+                            context.go('/dashBoard/reports');
+                          },
                           text: "Reports",
                         ),
                       ),
@@ -305,6 +330,10 @@ class _MainDrawerState extends ConsumerState<MainDrawer> {
                               matchTextDirection: true,
                               color: Colors.white,
                             ),
+                            onclick: ()async{
+                              await TokenStorage().removeAccessToken();
+                              showCustomSnackBar("Successfully logged out", bgColor: Colors.green);
+                            },
                             text: "Logout",
                           ),
                         ),
@@ -352,19 +381,23 @@ class _MainDrawerState extends ConsumerState<MainDrawer> {
 class DrawerItem extends StatelessWidget {
   final Widget icon;
   final String text;
-  const DrawerItem({Key? key, required this.icon, required this.text})
+  final Function() onclick;
+  const DrawerItem({Key? key, required this.icon, required this.text, required this.onclick})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 30,
       child: ListTile(
         minLeadingWidth: 10.w,
         leading: icon,
-        title: Text(
-          text,
-          style: Styles.heading3(context).copyWith(color: Colors.white),
+        title: GestureDetector(
+          onTap:onclick,
+          child: Text(
+            text,
+            style: Styles.heading3(context).copyWith(color: Colors.white),
+          ),
         ),
       ),
     );

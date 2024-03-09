@@ -122,7 +122,7 @@ class LeadsNotifier extends StateNotifier<AsyncValue> {
   }
 }
 
-final leadsFormData = StateProvider<LeadsModel>((ref) => LeadsModel(id: 1, leadSource: "Self Sourced", leadType: "Individual"));
+final leadsFormData = StateProvider<LeadsModel>((ref) => LeadsModel(id: 1, leadSource: "Self Sourced",email:"", leadType: "Individual"));
 final checkOutFormData = StateProvider<CheckOutModel>((ref) => CheckOutModel(
   didLeadMakeOrder: "Yes"
 ));

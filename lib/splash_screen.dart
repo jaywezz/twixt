@@ -7,6 +7,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
 import 'package:nested_navigation_gorouter_example/features/authentication/repository/token_storage.dart';
+import 'package:nested_navigation_gorouter_example/global_widgets/indicators/default_snackbar.dart';
+
+import 'features/authentication/screens/phone_login_screen.dart';
 
 
 Logger _log = Logger(
@@ -87,22 +90,29 @@ class SplashScreenPageState extends ConsumerState<SplashScreenPage> {
   }
 
   _checkUser() async {
-    print("chcking user");
+    try{
+      print("chcking user");
 
-    bool isValidToken = true;
+      bool isValidToken = true;
 
-    print("after open box");
-    Future.delayed(const Duration(milliseconds: 3000)).then((value) async {
-      if (await TokenStorage().hasToken()) {
-        if(!mounted) return;
-        context.go('/dashBoard');
-      } else {
-        //else, remain at login page
-        if(!mounted) return;
-        context.go('/login');
-      }
+      print("after open box");
+      Future.delayed(const Duration(milliseconds: 3000)).then((value) async {
+        if (await TokenStorage().hasToken()) {
+          if(!mounted) return;
+          context.go('/dashBoard');
+        } else {
+          //else, remain at login page
+          if(!mounted) return;
+          // context.go('/login');
+          context.goNamed(PhoneLoginScreen.routeName);
 
-    });
+        }
+
+      });
+    }catch(e){
+      print("an error occurred: ${e}");
+      showCustomSnackBar(e.toString(), bgColor: Colors.red);
+    }
   }
 
 // Future<void> _loadResource() async {

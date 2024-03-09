@@ -2,7 +2,7 @@ name: nested_navigation_gorouter_example
 description: A new Flutter project.
 
 publish_to: 'none' 
-version: 1.0.4+5
+version: 1.0.1+5
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -44,12 +44,15 @@ dependencies:
   path_provider: ^2.1.1
   geolocator: ^10.1.0
   google_maps_flutter: ^2.2.0
-  flutter_polyline_points: ^1.0.0
+  flutter_polyline_points: ^2.0.0
   flutter_typeahead: 5.0.2
   shared_preferences: ^2.2.2
   awesome_notifications: ^0.8.2
   url_launcher: ^6.2.0
   image_picker: ^1.0.4
+  pinput: ^4.0.0
+  upgrader: ^8.2.0
+  lottie: ^3.1.0
 
 dev_dependencies:
   flutter_test:

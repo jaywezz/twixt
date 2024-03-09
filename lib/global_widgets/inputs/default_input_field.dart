@@ -12,7 +12,7 @@ class DefaultInputField extends StatelessWidget {
   final bool textCenter;
   final Widget? suffix;
   final bool enabled;
-  final bool inputtype;
+  final TextInputType? inputtype;
   final double? height;
   final String title;
   final bool hasTitle;
@@ -25,6 +25,7 @@ class DefaultInputField extends StatelessWidget {
   final TextEditingController? textEditingController;
   final BorderRadius? borderRadius;
   final int? maxLine;
+  final int? minLine;
   var inputFormatters;
 
   DefaultInputField(
@@ -33,7 +34,7 @@ class DefaultInputField extends StatelessWidget {
         this.hintText,
         this.height,
         this.prefix,
-        this.inputtype = false,
+        this.inputtype,
         this.password = false,
         this.isroundedPrefix = true,
         this.hasTitle = true,
@@ -51,7 +52,9 @@ class DefaultInputField extends StatelessWidget {
         this.enabled = true,
         this.readOnly,
         this.initVal,
-        this.maxLine})
+        this.maxLine,
+        this.minLine,
+      })
       : super(key: key);
 
   @override
@@ -72,11 +75,12 @@ class DefaultInputField extends StatelessWidget {
           ),
           Container(
             margin: EdgeInsets.only(top: 0.h),
-            height: 55.h,
+            height:inputtype == TextInputType.multiline?null: 55.h,
             child: TextFormField(
               //autovalidateMode: AutovalidateMode.onUserInteraction,
               controller: textEditingController,
               maxLines: maxLine,
+              minLines: minLine,
               validator: validator,
               onSaved: onSaved,
               onChanged: onChanged,
@@ -85,7 +89,7 @@ class DefaultInputField extends StatelessWidget {
               readOnly: readOnly ?? false,
               inputFormatters: inputFormatters,
               scrollPadding: EdgeInsets.only(bottom:MediaQuery.of(context).viewInsets.bottom),
-              keyboardType: inputtype == true ? TextInputType.phone : null,
+              keyboardType: inputtype ?? TextInputType.text,
               style: TextStyle(
                 fontSize: 16.sp,
                 color: Colors.black54,
@@ -93,7 +97,6 @@ class DefaultInputField extends StatelessWidget {
 
               textAlign: textCenter ? TextAlign.center : TextAlign.start,
               obscureText: hide,
-
               decoration: InputDecoration(
                 errorStyle: TextStyle(
                   fontSize: 10,
@@ -116,14 +119,6 @@ class DefaultInputField extends StatelessWidget {
                     borderSide:
                     BorderSide(color: Styles.defaultInputFieldColor, width: 1)),
                 focusColor: Styles.defaultInputFieldColor,
-                // disabledBorder: InputBorder.none,
-                // enabledBorder: UnderlineInputBorder(
-                //     borderSide:
-                //         BorderSide(color: Styles.defaultInputFieldColor, width: 1)),
-                // OutlineInputBorder(
-                // borderRadius: BorderRadius.circular(defaultRadius1),
-                // borderSide:
-                //     BorderSide(color: Styles.defaultInputFieldColor, width: .7)),
                 disabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                     borderSide: BorderSide(color: Styles.defaultInputFieldColor, width: 0.7)),

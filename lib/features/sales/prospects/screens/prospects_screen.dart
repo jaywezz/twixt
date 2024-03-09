@@ -48,7 +48,7 @@ class _ProspectsScreenState extends ConsumerState<ProspectsScreen> {
                               text: "Refresh",
                               action: ()async{
                                 ref.read(isRefreshProvider.state).state = true;
-
+                                await ref.watch(prospectsRepositoryProvider).getNegotiations(true);
                                 ref.refresh(prospectsProvider);
                               }),
                         )
@@ -64,10 +64,11 @@ class _ProspectsScreenState extends ConsumerState<ProspectsScreen> {
                 return SizedBox(
                     height: MediaQuery.of(context).size.height - 250.sp,
                     child: RefreshIndicator(
-                      onRefresh: (){
+                      onRefresh: ()async{
                         print("refreshing: ");
                         ref.read(isRefreshProvider.state).state = true;
-                        return ref.watch(prospectsRepositoryProvider).getNegotiations(true);
+                        await ref.watch(prospectsRepositoryProvider).getNegotiations(true);
+                        return ref.refresh(prospectsProvider);
                       },
                       child: ListView.builder(
                           padding: EdgeInsets.zero,

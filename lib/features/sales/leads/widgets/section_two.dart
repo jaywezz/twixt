@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nested_navigation_gorouter_example/features/sales/leads/provider/leads_provider.dart';
 import 'package:nested_navigation_gorouter_example/global_widgets/form_drop_down.dart';
 import 'package:nested_navigation_gorouter_example/global_widgets/inputs/default_input_field.dart';
+import 'package:nested_navigation_gorouter_example/utils/validators.dart';
 
 class SectionTwo extends ConsumerWidget {
   const SectionTwo({Key? key,}) : super(key: key);
@@ -64,7 +65,7 @@ class SectionTwo extends ConsumerWidget {
           ),
 
           DefaultInputField(
-              inputtype: true,
+              inputtype: const TextInputType.numberWithOptions(),
               readOnly:false,
               hintText: "Phone Number",
               title: "Phone Number",
@@ -97,9 +98,7 @@ class SectionTwo extends ConsumerWidget {
                 ref.watch(leadsFormData).email = value;
 
               },
-              validator: (onValidateVal) {
-
-              }
+              // validator: emailValidator
           ),
 
           FormDropDownField(
@@ -108,10 +107,9 @@ class SectionTwo extends ConsumerWidget {
                 ref.watch(leadsFormData).leadSource = value;
               },
               value: "Referral",
-              itemsLists:  ["Referral", "Self Sourced"]),
+              itemsLists: const  ["Referral", "Self Sourced"]),
           SizedBox(height: 10.h,),
           DefaultInputField(
-            inputtype: false,
             readOnly: false,
             hintText: "Next Cause of action",
             title: "Next Cause of action",

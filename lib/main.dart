@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
         routerConfig: goRouter,
         key: navigatorKey,
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(primarySwatch: Colors.blue, textTheme: GoogleFonts.poppinsTextTheme()),
+        theme: ThemeData(useMaterial3: false, primarySwatch: Colors.blue, textTheme: GoogleFonts.poppinsTextTheme()),
       ),
     );
   }

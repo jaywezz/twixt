@@ -355,7 +355,8 @@ class _LeadsPageState extends ConsumerState<AddLeadsPage>
         height: 70.h,
         child: Padding(
             padding: EdgeInsets.all(15.h),
-            child: ref.watch(leadsNotifier) is AsyncLoading<void>?Center(child: const AnimatedCircularProgressIndicator()):FullWidthButton(
+            child: ref.watch(leadsNotifier) is AsyncLoading<void>
+                ?const Center(child:  AnimatedCircularProgressIndicator()):FullWidthButton(
               color: currentIndex == 1
                   ? Styles.graphDarkblue
                   : Colors.yellow.shade600,

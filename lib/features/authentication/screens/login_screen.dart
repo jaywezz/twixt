@@ -22,7 +22,7 @@ import 'package:url_launcher/url_launcher.dart';
 Logger _log = Logger(printer: PrettyPrinter());
 
 class SignInScreen extends ConsumerStatefulWidget {
-  static const routeName = '/sign-in';
+  static const routeName = 'sign-in';
   const SignInScreen({Key? key}) : super(key: key);
 
   @override
@@ -65,9 +65,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     return Scaffold(
       body:Container(
         decoration: const BoxDecoration(
-          color: Colors.white
-          // image: DecorationImage(
-          //     image: AssetImage('assets/images/bg.png'), fit: BoxFit.cover),
+          image: DecorationImage(
+              image: AssetImage('assets/images/bg.png'), fit: BoxFit.cover),
         ),
         child: Form(
           key: loginKey,
@@ -100,7 +99,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                             textEditingController: phoneController,
                             hide: false,
                             // prefix: Icon(Icons.call, color: Colors.black54,),
-                            inputtype: true,
+                            inputtype: TextInputType.phone,
                             hintText: "Enter your phone number",
                             validator: phoneNumberValidator,
                           ),
@@ -143,7 +142,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                         ],
                       ),
 
-                      SizedBox(height: 20),
+                      // SizedBox(height: 20),
                       SizedBox(
                         width: double.infinity,
                         child: Row(
@@ -151,30 +150,39 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                           children: [
                             Row(
                               children: [
-                                GestureDetector(
-                                  child: Container(
-                                    height: 20,
-                                    width: 20,
-                                    decoration: BoxDecoration(
-                                        color: rememberMe
-                                            ? Styles.appSecondaryColor
-                                            : Colors.white,
-                                        border: Border.all(
-                                          color: Styles.defaultInputFieldColor,
-                                        ),
-                                        borderRadius:
-                                        BorderRadius.circular(defaultRadius1 - 6)),
-                                    margin: const EdgeInsets.only(left: 10),
-                                  ),
-                                  onTap: () {
+                                // GestureDetector(
+                                //   child: Container(
+                                //     height: 20,
+                                //     width: 20,
+                                //     decoration: BoxDecoration(
+                                //         color: rememberMe
+                                //             ? Styles.appSecondaryColor
+                                //             : Colors.white,
+                                //         border: Border.all(
+                                //           color: Styles.defaultInputFieldColor,
+                                //         ),
+                                //         borderRadius:
+                                //         BorderRadius.circular(defaultRadius1 - 6)),
+                                //     margin: const EdgeInsets.only(left: 10),
+                                //   ),
+                                //   onTap: () {
+                                //     setState(() {
+                                //       rememberMe = !rememberMe;
+                                //     });
+                                //   },
+                                // ),
+                                Checkbox(
+                                  activeColor: Styles.appPrimaryColor,
+                                  value: rememberMe,
+                                  onChanged: (value) {
                                     setState(() {
-                                      rememberMe = !rememberMe;
+                                      rememberMe = value!;
                                     });
                                   },
                                 ),
-                                SizedBox(
-                                  width: defaultPadding(context) * 0.7,
-                                ),
+                                // SizedBox(
+                                //   width: defaultPadding(context) * 0.7,
+                                // ),
                                 const Text("Keep me signed in")
                               ],
                             ),
@@ -200,12 +208,12 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                         action: ()async {
                           // context.go("/dashboard");
                           if(loginKey.currentState!.validate()){
-                            await ref.read(authNotifier.notifier).login(phoneController.text, passwordController.text, context);
+                            await ref.read(authNotifier.notifier).phonePasswordLogin(phoneController.text, passwordController.text, context);
                           }
                         },
                       ),
 
-                      SizedBox(height: 10,),
+                      // SizedBox(height: 10,),
                       RichText(
                         text: TextSpan(
                           children: <TextSpan>[

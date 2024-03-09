@@ -13,6 +13,7 @@ import 'package:nested_navigation_gorouter_example/features/sales/prospects/prov
 import 'package:nested_navigation_gorouter_example/global_widgets/full_width_widget.dart';
 import 'package:nested_navigation_gorouter_example/global_widgets/indicators/default_progress_indicator.dart';
 import 'package:nested_navigation_gorouter_example/global_widgets/indicators/default_snackbar.dart';
+import 'package:nested_navigation_gorouter_example/global_widgets/inputs/search_field.dart';
 import 'package:nested_navigation_gorouter_example/utils/app_constants.dart';
 import 'package:nested_navigation_gorouter_example/utils/styles.dart';
 
@@ -40,6 +41,7 @@ class _CreateOrderScreenState extends ConsumerState<CreateOrderScreen> {
     super.initState();
   }
 
+  TextEditingController searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +58,7 @@ class _CreateOrderScreenState extends ConsumerState<CreateOrderScreen> {
                 bottom: defaultPadding(context)),
             decoration: const BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage('assets/bg.png'), fit: BoxFit.cover),
+                    image: AssetImage('assets/images/bg.png'), fit: BoxFit.cover),
                 borderRadius:
                 BorderRadius.only(bottomLeft: Radius.circular(30))),
             child: SingleChildScrollView(
@@ -68,13 +70,17 @@ class _CreateOrderScreenState extends ConsumerState<CreateOrderScreen> {
                     SizedBox(
                       height: defaultPadding(context),
                     ),
+
+                    SizedBox(
+                      height: defaultPadding(context),
+                    ),
                     Stack(
                       children: [
                         Material(
                           child: InkWell(
                             splashColor: Theme.of(context).splashColor,
                             onTap: () => context.pop(),
-                            child: Icon(
+                            child: const Icon(
                               Icons.arrow_back_ios_new,
                               color: Colors.black54,
                             ),
@@ -105,6 +111,21 @@ class _CreateOrderScreenState extends ConsumerState<CreateOrderScreen> {
                     SizedBox(
                       height: defaultPadding(context),
                     ),
+                    LargeSearchField(
+                        textEditingController: searchController,
+                        onChanged: (value){
+                          setState(() {
+                            searchController.text = value;
+                          });
+                        },
+                        onTapClose: (){
+                          setState(() {
+                            searchController.clear();
+                          });
+                        }),
+                    SizedBox(
+                      height: defaultPadding(context),
+                    ),
                     Text(
                       'Create Order',
                       style: Styles.heading3(context),
@@ -130,9 +151,11 @@ class _CreateOrderScreenState extends ConsumerState<CreateOrderScreen> {
                      children: [
                        ref.watch(productsProvider).when(
                            data: (data){
+                             data = data.where((element) => element.productName!.toLowerCase()
+                                 .contains(searchController.text.toLowerCase())).toList();
                              return ListView.builder(
                                // key: PageStorageKey(category.id),
-                                 physics: NeverScrollableScrollPhysics(),
+                                 physics: const NeverScrollableScrollPhysics(),
                                  shrinkWrap: true,
                                  itemCount: data.length,
                                  itemBuilder: (builder, index){

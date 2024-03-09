@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:nested_navigation_gorouter_example/features/schedules/models/schedules_model.dart';
 import 'package:nested_navigation_gorouter_example/features/schedules/providers/schedules_provider.dart';
 import 'package:nested_navigation_gorouter_example/global_widgets/indicators/default_snackbar.dart';
@@ -141,7 +142,20 @@ class _IndividualScheduleScreenState extends ConsumerState<IndividualScheduleScr
             //     Text("Sep 2, 2022",style: Styles.heading3(context).copyWith(color: Colors.black),)
             //   ],
             // ),
-            Expanded(
+            ref.watch(selectedEventsProvider).isEmpty?Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+
+                Lottie.asset('assets/lottie/empty_lottie.json',
+                    height: MediaQuery.of(context).size.height *.25,
+                    width: MediaQuery.of(context).size.height *.25,),
+                Text("No schedules for the selected day",
+                  style: Styles.heading3(context).copyWith(color: Colors.black54),),
+
+              ],
+            )
+                :Expanded(
               child: RefreshIndicator(
                 onRefresh: ()async{
                   return await ref.refresh(routesProvider);

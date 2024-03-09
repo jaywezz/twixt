@@ -28,6 +28,9 @@ import 'package:nested_navigation_gorouter_example/main.dart';
 import 'package:nested_navigation_gorouter_example/features/reports/screens/reports_screen.dart';
 import 'package:nested_navigation_gorouter_example/splash_screen.dart';
 
+import '../features/authentication/screens/otp_login2.dart';
+import '../features/authentication/screens/otp_login_screen.dart';
+import '../features/authentication/screens/phone_login_screen.dart';
 import '../features/sales/leads/screens/leads_details.dart';
 
 
@@ -67,7 +70,41 @@ final goRouter = GoRouter(
         child:SplashScreenPage(),
       ),
     ),
-    GoRoute(path: '/login',
+    GoRoute(
+        path: "/phone-login",
+        name: PhoneLoginScreen.routeName,
+        pageBuilder: (context, state) =>  const NoTransitionPage(
+          child: PhoneLoginScreen(),
+        ),
+        routes: [
+          GoRoute(
+              path: "otp-login-screen",
+              name: OTPLoginScreen.routeName,
+              pageBuilder: (context, state) {
+                return NoTransitionPage(
+                  child: OTPLoginScreen(
+                    phoneNumber: (state.extra as Map<String, dynamic>)["phone"],
+                  ),
+                );
+              }
+          ),
+          GoRoute(
+              path: "otp-screen-2",
+              name: OtpLogin2.routeName,
+              pageBuilder: (context, state) {
+                return NoTransitionPage(
+                  child: OtpLogin2(
+                    phoneNumber: (state.extra as Map<String, dynamic>)["phone"],
+                    otp: (state.extra as Map<String, dynamic>)["otp"].toString(),
+                  ),
+                );
+              }
+          ),
+        ]
+    ),
+    GoRoute(
+        path: '/login',
+      name: SignInScreen.routeName,
       pageBuilder: (context, state) => const NoTransitionPage(
         child: SignInScreen(),
       ),

@@ -13,16 +13,16 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../../../global_widgets/indicators/default_progress_indicator.dart';
 
-class OTPScreen extends ConsumerStatefulWidget {
-  static const routeName = 'otp_screen';
+class OTPLoginScreen extends ConsumerStatefulWidget {
+  static const routeName = 'otp_login_screen';
   final String phoneNumber;
-  const OTPScreen({Key? key, required this.phoneNumber,}) : super(key: key);
+  const OTPLoginScreen({Key? key, required this.phoneNumber}) : super(key: key);
 
   @override
-  ConsumerState<OTPScreen> createState() => _OTPScreenState();
+  ConsumerState<OTPLoginScreen> createState() => _OTPLoginScreenState();
 }
 
-class _OTPScreenState extends ConsumerState<OTPScreen> {
+class _OTPLoginScreenState extends ConsumerState<OTPLoginScreen> {
   final Duration duration = const Duration(milliseconds: 800);
   TextEditingController otpController = TextEditingController();
   @override
@@ -39,10 +39,10 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Image.asset("assets/icons/a – 23.png")
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Image.asset("assets/icons/a – 23.png")
                   ),
                 ),
                 SizedBox(height: 50.h,),
@@ -77,12 +77,12 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                   child: Column(
                     children: [
                       Text(
-                        "Enter 4 Digit Pin",
-                        style: Styles.heading1(context)
+                          "Enter 6 Digit Pin",
+                          style: Styles.heading1(context)
                       ),
                       SizedBox(height: 10.h),
                       AutoSizeText(
-                        "The recovery code was sent to your phone number. Please enter the code",
+                        "The login code was sent to your phone number. Please enter the code",
                         maxLines: 3,
                         textAlign: TextAlign.center,
                         style:
@@ -95,6 +95,7 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                           appContext: (context),
                           keyboardType: TextInputType.number,
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          useExternalAutoFillGroup: true,
                           pinTheme: PinTheme.defaults(
                             shape: PinCodeFieldShape.box,
                             borderWidth: 1,
@@ -128,12 +129,12 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                         action: ()async {
                           if(otpController.text.length ==6 && otpController.text != ""){
                             await ref.read(authNotifier.notifier)
-                                .verifyOtp(widget.phoneNumber, otpController.text, context);
+                                .otpLogin(widget.phoneNumber, otpController.text, context);
                           }else{
                             showCustomSnackBar("Invalid otp entered", bgColor: Styles.appPrimaryColor);
                           }
                         },
-                        text: "Submit",
+                        text: "Login",
                       ),
                       SizedBox(height: 20.h),
                       TextButton(

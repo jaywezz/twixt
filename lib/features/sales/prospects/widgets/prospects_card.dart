@@ -55,7 +55,7 @@ import 'package:nested_navigation_gorouter_example/utils/styles.dart';
                child: FittedBox(
                  fit: BoxFit.fitHeight,
                  child: Text(
-                     widget.customer.customerName!,
+                     widget.customer.institutionName!,
                      style: Styles.heading2(context)
                  ),
                ),

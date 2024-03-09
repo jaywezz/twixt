@@ -114,7 +114,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                                     email = onSavedVal.toString().trim();
                                   },
                                   hintText: "07222*****",
-                                  inputtype: true,
+                                  inputtype: TextInputType.phone,
                                   prefix: Icon(
                                     Icons.phone_android_rounded,
                                     size: 16.h,
@@ -129,7 +129,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                               text: "Proceed",
                               action: ()async {
                                 if(globalKey.currentState!.validate()){
-                                  await ref.read(authNotifier.notifier).sendOtp(phoneController.text, context);
+                                  await ref.read(authNotifier.notifier).sendOtp(phoneController.text, context, false);
                                 }
 
 
